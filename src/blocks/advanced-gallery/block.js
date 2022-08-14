@@ -16,7 +16,10 @@ import { galleryIcon } from '@kadence/icons';
 import edit from './edit';
 import metadata from './block.json';
 import classnames from 'classnames';
-
+/**
+ * Import prior versions
+ */
+import v6 from './deprecated/v6'
 /**
  * Internal block libraries
  */
@@ -151,7 +154,7 @@ registerBlockType( 'kadence/advancedgallery', {
 				'kadence-blocks-gallery-intrinsic': ( ( ( type === 'grid' || type === 'carousel' || type === 'slider' || type === 'thumbslider' ) && imageRatio ) || ( type !== 'fluidcarousel' && type !== 'tiles' && image.width && image.height ) ),
 				[ `kb-gallery-image-ratio-${ imageRatio }` ]: imageRatio && ( type === 'grid' || type === 'carousel' || type === 'slider' || type === 'thumbslider' ),
 			} );
-			const img = <div className={ imgContainClassName } style={ { paddingBottom: ( ( ( type !== 'grid' && type !== 'carousel' && type !== 'fluidcarousel' && type !== 'tiles' && type !== 'slider' && type !== 'thumbslider' ) && image.width && image.height ) || ( type === 'grid' && imageRatio === 'inherit' && image.width && image.height ) ? ( ( image.height / image.width ) * 100 ) + '%' : undefined ) } }><img src={ image.thumbUrl || image.url } width={ image.width } height={ image.height } alt={ image.alt } data-full-image={ image.url } data-light-image={ image.lightUrl } data-id={ image.id } data-link={ image.link } data-custom-link={ image.customLink } data-custom-link-target={ image.linkTarget } data-sponsored={ image.linkSponsored } className={ `${ ( image.id ? `wp-image-${ image.id }` : 'wp-image-' ) }${ ( type === 'carousel' || type === 'fluidcarousel' || type === 'tiles' || type === 'slider' || type === 'thumbslider' ? ' skip-lazy' : '' ) }` } /></div>;
+			const img = <div className={ imgContainClassName } style={ { paddingBottom: ( ( ( type !== 'grid' && type !== 'carousel' && type !== 'fluidcarousel' && type !== 'tiles' && type !== 'slider' && type !== 'thumbslider' ) && image.width && image.height ) || ( ( type === 'grid' || type === 'carousel' ) && imageRatio === 'inherit' && image.width && image.height ) ? ( ( image.height / image.width ) * 100 ) + '%' : undefined ) } }><img src={ image.thumbUrl || image.url } width={ image.width } height={ image.height } alt={ image.alt } data-full-image={ image.url } data-light-image={ image.lightUrl } data-id={ image.id } data-link={ image.link } data-custom-link={ image.customLink } data-custom-link-target={ image.linkTarget } data-sponsored={ image.linkSponsored } className={ `${ ( image.id ? `wp-image-${ image.id }` : 'wp-image-' ) }${ ( type === 'carousel' || type === 'fluidcarousel' || type === 'tiles' || type === 'slider' || type === 'thumbslider' ? ' skip-lazy' : '' ) }` } /></div>;
 			const figClassName = classnames( {
 				'kb-gallery-figure': true,
 				'kb-gallery-item-has-link': href,
@@ -315,6 +318,7 @@ registerBlockType( 'kadence/advancedgallery', {
 		);
 	},
 	deprecated: [
+		v6,
 		{
 			attributes: {
 				uniqueID: {
