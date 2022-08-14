@@ -84,11 +84,13 @@ registerBlockType( 'kadence/advancedgallery', {
 	},
 	edit,
 	save: props => {
-		const { attributes: { uniqueID, images, columns, type, linkTo, showCaption, captionStyle, imageRatio, imageFilter, lightbox, lightboxCaption, dotStyle, transSpeed, slidesScroll, autoPlay, arrowStyle, autoSpeed, carouselAlign, thumbnailColumns, thumbnailRatio, mobileForceHover, kadenceDynamic } } = props;
+		const { attributes: { uniqueID, images, columns, type, linkTo, showCaption, captionStyle, imageRatio, imageFilter, lightbox, lightboxCaption, dotStyle, transSpeed, slidesScroll, autoPlay, arrowStyle, autoSpeed, carouselAlign, thumbnailColumns, thumbnailRatio, mobileForceHover, kadenceDynamic, lazilyLoadImages } } = props;
 		const dynamicSource = ( kadenceDynamic && kadenceDynamic['images'] && kadenceDynamic['images'].enable ? true : false );
 		if ( dynamicSource ) {
 			return null;
 		}
+		// if lazilyLoadImages is true (the default), set disableLazyLoading = null to omit the data-disable-lazy-loading attribute
+		const disableLazyLoading = lazilyLoadImages ? null : true;
 		const galleryClassNames = classnames(
 			{
 				'kb-gallery-ul': true,
@@ -212,7 +214,7 @@ registerBlockType( 'kadence/advancedgallery', {
 						data-lightbox-caption={ ( lightboxCaption ? 'true' : false ) }
 					>
 						<div className={ `kt-blocks-carousel kt-carousel-container-dotstyle-${ dotStyle }` }>
-							<div className={ `kt-blocks-carousel-init kb-gallery-carousel kt-carousel-arrowstyle-${ arrowStyle } kt-carousel-dotstyle-${ dotStyle }` } data-columns-xxl={ columns[ 0 ] } data-columns-xl={ columns[ 1 ] } data-columns-md={ columns[ 2 ] } data-columns-sm={ columns[ 3 ] } data-columns-xs={ columns[ 4 ] } data-columns-ss={ columns[ 5 ] } data-slider-anim-speed={ transSpeed } data-slider-scroll={ slidesScroll } data-slider-arrows={ ( 'none' === arrowStyle ? false : true ) } data-slider-dots={ ( 'none' === dotStyle ? false : true ) } data-slider-hover-pause="false" data-slider-auto={ autoPlay } data-slider-speed={ autoSpeed }>
+							<div className={ `kt-blocks-carousel-init kb-gallery-carousel kt-carousel-arrowstyle-${ arrowStyle } kt-carousel-dotstyle-${ dotStyle }` } data-columns-xxl={ columns[ 0 ] } data-columns-xl={ columns[ 1 ] } data-columns-md={ columns[ 2 ] } data-columns-sm={ columns[ 3 ] } data-columns-xs={ columns[ 4 ] } data-columns-ss={ columns[ 5 ] } data-slider-anim-speed={ transSpeed } data-slider-scroll={ slidesScroll } data-slider-arrows={ ( 'none' === arrowStyle ? false : true ) } data-slider-dots={ ( 'none' === dotStyle ? false : true ) } data-slider-hover-pause="false" data-slider-auto={ autoPlay } data-slider-speed={ autoSpeed } data-disable-lazy-loading={ disableLazyLoading }>
 								{ images.map( ( image, index ) => (
 									<div className="kb-slide-item kb-gallery-carousel-item" key={ index }>
 										{ renderGalleryImages( image ) }
@@ -229,7 +231,7 @@ registerBlockType( 'kadence/advancedgallery', {
 						data-lightbox-caption={ ( lightboxCaption ? 'true' : false ) }
 					>
 						<div className={ `kt-blocks-carousel kt-carousel-container-dotstyle-${ dotStyle }` }>
-							<div className={ `kt-blocks-carousel-init kb-blocks-fluid-carousel kt-carousel-arrowstyle-${ arrowStyle } kt-carousel-dotstyle-${ dotStyle }${ ( carouselAlign === false ? ' kb-carousel-mode-align-left' : '' ) }` } data-slider-anim-speed={ transSpeed } data-slider-type="fluidcarousel" data-slider-scroll="1" data-slider-arrows={ ( 'none' === arrowStyle ? false : true ) } data-slider-dots={ ( 'none' === dotStyle ? false : true ) } data-slider-hover-pause="false" data-slider-auto={ autoPlay } data-slider-speed={ autoSpeed } data-slider-center-mode={ ( carouselAlign === false ? 'false' : undefined ) }>
+							<div className={ `kt-blocks-carousel-init kb-blocks-fluid-carousel kt-carousel-arrowstyle-${ arrowStyle } kt-carousel-dotstyle-${ dotStyle }${ ( carouselAlign === false ? ' kb-carousel-mode-align-left' : '' ) }` } data-slider-anim-speed={ transSpeed } data-slider-type="fluidcarousel" data-slider-scroll="1" data-slider-arrows={ ( 'none' === arrowStyle ? false : true ) } data-slider-dots={ ( 'none' === dotStyle ? false : true ) } data-slider-hover-pause="false" data-slider-auto={ autoPlay } data-slider-speed={ autoSpeed } data-slider-center-mode={ ( carouselAlign === false ? 'false' : undefined ) } data-disable-lazy-loading={ disableLazyLoading }>
 								{ images.map( ( image, index ) => (
 									<div className="kb-slide-item kb-gallery-carousel-item" key={ index }>
 										{ renderGalleryImages( image ) }
@@ -246,7 +248,7 @@ registerBlockType( 'kadence/advancedgallery', {
 						data-lightbox-caption={ ( lightboxCaption ? 'true' : false ) }
 					>
 						<div className={ `kt-blocks-carousel kt-carousel-container-dotstyle-${ dotStyle }` }>
-							<div className={ `kt-blocks-carousel-init kb-blocks-slider kt-carousel-arrowstyle-${ arrowStyle } kt-carousel-dotstyle-${ dotStyle }` } data-slider-anim-speed={ transSpeed } data-slider-type="slider" data-slider-scroll="1" data-slider-arrows={ ( 'none' === arrowStyle ? false : true ) } data-slider-dots={ ( 'none' === dotStyle ? false : true ) } data-slider-hover-pause="false" data-slider-auto={ autoPlay } data-slider-speed={ autoSpeed }>
+							<div className={ `kt-blocks-carousel-init kb-blocks-slider kt-carousel-arrowstyle-${ arrowStyle } kt-carousel-dotstyle-${ dotStyle }` } data-slider-anim-speed={ transSpeed } data-slider-type="slider" data-slider-scroll="1" data-slider-arrows={ ( 'none' === arrowStyle ? false : true ) } data-slider-dots={ ( 'none' === dotStyle ? false : true ) } data-slider-hover-pause="false" data-slider-auto={ autoPlay } data-slider-speed={ autoSpeed } data-disable-lazy-loading={ disableLazyLoading }>
 								{ images.map( ( image, index ) => (
 									<div className="kb-slide-item kb-gallery-slide-item" key={ index }>
 										{ renderGalleryImages( image ) }
@@ -263,14 +265,14 @@ registerBlockType( 'kadence/advancedgallery', {
 						data-lightbox-caption={ ( lightboxCaption ? 'true' : false ) }
 					>
 						<div className={ 'kt-blocks-carousel kt-carousel-container-dotstyle-none' }>
-							<div id={ `kb-slider-${ uniqueID }` } className={ `kt-blocks-carousel-init kb-gallery-carousel kt-carousel-arrowstyle-${ arrowStyle } kt-carousel-dotstyle-none` } data-columns-xxl={ thumbnailColumns[ 0 ] } data-columns-xl={ thumbnailColumns[ 1 ] } data-columns-md={ thumbnailColumns[ 2 ] } data-columns-sm={ thumbnailColumns[ 3 ] } data-columns-xs={ thumbnailColumns[ 4 ] } data-columns-ss={ thumbnailColumns[ 5 ] } data-slider-anim-speed={ transSpeed } data-slider-type="thumbnail" data-slider-nav={ `kb-thumb-slider-${ uniqueID }` } data-slider-scroll={ slidesScroll } data-slider-arrows={ ( 'none' === arrowStyle ? false : true ) } data-slider-dots={ false } data-slider-hover-pause="false" data-slider-auto={ autoPlay } data-slider-speed={ autoSpeed }>
+							<div id={ `kb-slider-${ uniqueID }` } className={ `kt-blocks-carousel-init kb-gallery-carousel kt-carousel-arrowstyle-${ arrowStyle } kt-carousel-dotstyle-none` } data-columns-xxl={ thumbnailColumns[ 0 ] } data-columns-xl={ thumbnailColumns[ 1 ] } data-columns-md={ thumbnailColumns[ 2 ] } data-columns-sm={ thumbnailColumns[ 3 ] } data-columns-xs={ thumbnailColumns[ 4 ] } data-columns-ss={ thumbnailColumns[ 5 ] } data-slider-anim-speed={ transSpeed } data-slider-type="thumbnail" data-slider-nav={ `kb-thumb-slider-${ uniqueID }` } data-slider-scroll={ slidesScroll } data-slider-arrows={ ( 'none' === arrowStyle ? false : true ) } data-slider-dots={ false } data-slider-hover-pause="false" data-slider-auto={ autoPlay } data-slider-speed={ autoSpeed } data-disable-lazy-loading={ disableLazyLoading }>
 								{ images.map( ( image, index ) => (
 									<div className="kb-slide-item kb-gallery-carousel-item" key={ index }>
 										{ renderGalleryImages( image ) }
 									</div>
 								) ) }
 							</div>
-							<div id={ `kb-thumb-slider-${ uniqueID }` } className={ `kb-gallery-carousel kb-gallery-slider-thumbnails kt-carousel-arrowstyle-${ arrowStyle } kt-carousel-dotstyle-none` } data-slider-anim-speed={ transSpeed } data-slider-type="thumbnail" data-slider-nav={ `kb-slider-${ uniqueID }` } data-slider-scroll={ slidesScroll } data-slider-arrows={ ( 'none' === arrowStyle ? false : true ) } data-slider-dots={ false } data-slider-hover-pause="false" data-slider-auto={ autoPlay } data-slider-speed={ autoSpeed }>
+							<div id={ `kb-thumb-slider-${ uniqueID }` } className={ `kb-gallery-carousel kb-gallery-slider-thumbnails kt-carousel-arrowstyle-${ arrowStyle } kt-carousel-dotstyle-none` } data-slider-anim-speed={ transSpeed } data-slider-type="thumbnail" data-slider-nav={ `kb-slider-${ uniqueID }` } data-slider-scroll={ slidesScroll } data-slider-arrows={ ( 'none' === arrowStyle ? false : true ) } data-slider-dots={ false } data-slider-hover-pause="false" data-slider-auto={ autoPlay } data-slider-speed={ autoSpeed } data-disable-lazy-loading={ disableLazyLoading }>
 								{ images.map( ( image, index ) => (
 									<div className="kb-slide-item kb-gallery-carousel-item" key={ index }>
 										{ renderThumbImages( image ) }

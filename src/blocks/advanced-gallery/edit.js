@@ -144,6 +144,7 @@ function GalleryEdit( props ) {
 		autoPlay,
 		autoSpeed,
 		transSpeed,
+		lazilyLoadImages,
 		slidesScroll,
 		arrowStyle,
 		dotStyle,
@@ -547,79 +548,84 @@ function GalleryEdit( props ) {
 	}
 
 	const carouselSettings = {
-		dots          : ( dotStyle === 'none' ? false : true ),
-		arrows        : ( arrowStyle === 'none' ? false : true ),
-		infinite      : true,
-		speed         : transSpeed,
-		draggable     : false,
-		autoplaySpeed : autoSpeed,
-		autoplay      : autoPlay,
-		slidesToShow  : columns[ 0 ],
-		slidesToScroll: ( slidesScroll === 'all' ? columns[ 0 ] : 1 ),
-		nextArrow     : <CustomNextArrow/>,
-		prevArrow     : <CustomPrevArrow/>,
+		dots            : (dotStyle === 'none' ? false : true),
+		arrows          : (arrowStyle === 'none' ? false : true),
+		infinite        : true,
+		speed           : transSpeed,
+		draggable       : false,
+		autoplaySpeed   : autoSpeed,
+		autoplay        : autoPlay,
+		slidesToShow    : columns[0],
+		slidesToScroll  : (slidesScroll === 'all' ? columns[0] : 1),
+		nextArrow       : <CustomNextArrow/>,
+		prevArrow       : <CustomPrevArrow/>,
+		lazilyLoadImages: lazilyLoadImages,
 	};
 	const fluidCarouselSettings = {
-		dots          : ( dotStyle === 'none' ? false : true ),
-		arrows        : ( arrowStyle === 'none' ? false : true ),
-		infinite      : true,
-		speed         : transSpeed,
-		draggable     : false,
-		autoplaySpeed : autoSpeed,
-		autoplay      : autoPlay,
-		centerMode    : ( carouselAlign === false ? false : true ),
-		variableWidth : true,
-		slidesToShow  : 1,
-		slidesToScroll: 1,
-		nextArrow     : <CustomNextArrow/>,
-		prevArrow     : <CustomPrevArrow/>,
-		onInit        : () => carouselSizeTrigger(),
-		onReInit      : () => carouselSizeTrigger(),
+		dots            : (dotStyle === 'none' ? false : true),
+		arrows          : (arrowStyle === 'none' ? false : true),
+		infinite        : true,
+		speed           : transSpeed,
+		draggable       : false,
+		autoplaySpeed   : autoSpeed,
+		autoplay        : autoPlay,
+		centerMode      : (carouselAlign === false ? false : true),
+		variableWidth   : true,
+		slidesToShow    : 1,
+		slidesToScroll  : 1,
+		nextArrow       : <CustomNextArrow/>,
+		prevArrow       : <CustomPrevArrow/>,
+		onInit          : () => carouselSizeTrigger(),
+		onReInit        : () => carouselSizeTrigger(),
+		lazilyLoadImages: lazilyLoadImages,
 	};
 	const sliderSettings = {
-		dots          : ( dotStyle === 'none' ? false : true ),
-		arrows        : ( arrowStyle === 'none' ? false : true ),
-		infinite      : true,
-		fade          : true,
-		speed         : transSpeed,
-		draggable     : false,
-		autoplaySpeed : autoSpeed,
-		autoplay      : autoPlay,
-		slidesToShow  : 1,
-		slidesToScroll: 1,
-		nextArrow     : <CustomNextArrow/>,
-		prevArrow     : <CustomPrevArrow/>,
+		dots            : (dotStyle === 'none' ? false : true),
+		arrows          : (arrowStyle === 'none' ? false : true),
+		infinite        : true,
+		fade            : true,
+		speed           : transSpeed,
+		draggable       : false,
+		autoplaySpeed   : autoSpeed,
+		autoplay        : autoPlay,
+		slidesToShow    : 1,
+		slidesToScroll  : 1,
+		nextArrow       : <CustomNextArrow/>,
+		prevArrow       : <CustomPrevArrow/>,
+		lazilyLoadImages: lazilyLoadImages,
 	};
 	const thumbsliderSettings = {
-		dots          : false,
-		arrows        : ( arrowStyle === 'none' ? false : true ),
-		infinite      : true,
-		fade          : true,
-		speed         : transSpeed,
-		draggable     : false,
-		autoplaySpeed : autoSpeed,
-		autoplay      : autoPlay,
-		slidesToShow  : 1,
-		slidesToScroll: 1,
-		onInit        : () => onSelectImage( 0 ),
-		nextArrow     : <CustomNextArrow/>,
-		prevArrow     : <CustomPrevArrow/>,
+		dots            : false,
+		arrows          : (arrowStyle === 'none' ? false : true),
+		infinite        : true,
+		fade            : true,
+		speed           : transSpeed,
+		draggable       : false,
+		autoplaySpeed   : autoSpeed,
+		autoplay        : autoPlay,
+		slidesToShow    : 1,
+		slidesToScroll  : 1,
+		onInit          : () => onSelectImage(0),
+		nextArrow       : <CustomNextArrow/>,
+		prevArrow       : <CustomPrevArrow/>,
+		lazilyLoadImages: lazilyLoadImages,
 	};
 	const thumbsliderthumbsSettings = {
-		dots          : false,
-		arrows        : ( arrowStyle === 'none' ? false : true ),
-		infinite      : true,
-		fade          : false,
-		speed         : transSpeed,
-		draggable     : false,
-		autoplaySpeed : autoSpeed,
-		autoplay      : autoPlay,
-		slidesToShow  : thumbnailColumns[ 0 ],
-		slidesToScroll: 1,
-		nextArrow     : <CustomNextArrow/>,
-		prevArrow     : <CustomPrevArrow/>,
-		swipeToSlide  : true,
-		focusOnSelect : true,
+		dots            : false,
+		arrows          : (arrowStyle === 'none' ? false : true),
+		infinite        : true,
+		fade            : false,
+		speed           : transSpeed,
+		draggable       : false,
+		autoplaySpeed   : autoSpeed,
+		autoplay        : autoPlay,
+		slidesToShow    : thumbnailColumns[0],
+		slidesToScroll  : 1,
+		nextArrow       : <CustomNextArrow/>,
+		prevArrow       : <CustomPrevArrow/>,
+		swipeToSlide    : true,
+		focusOnSelect   : true,
+		lazilyLoadImages: lazilyLoadImages,
 	};
 	const controls = (
 		<BlockControls>
@@ -1078,14 +1084,22 @@ function GalleryEdit( props ) {
 									</>
 								)}
 								{ids && undefined !== ids[ 0 ] && !dynamicSource && (
-									<ImageSizeControl
-										label={__( 'Thumbnail Image Size', 'kadence-blocks' )}
-										slug={thumbSize}
-										id={ids[ 0 ]}
-										fullSelection={true}
-										selectByValue={false}
-										onChange={() => changeImageThumbSize}
-									/>
+									<>
+										<ImageSizeControl
+											label={__( 'Thumbnail Image Size', 'kadence-blocks' )}
+											slug={thumbSize}
+											id={ids[ 0 ]}
+											fullSelection={true}
+											selectByValue={false}
+											onChange={() => changeImageThumbSize}
+										/>
+
+										<ToggleControl
+										label={__( 'Lazily Load Images', 'kadence-blocks' )}
+										checked={lazilyLoadImages}
+										onChange={( value ) => setAttributes( { lazilyLoadImages: value } )}
+										/>
+									</>
 								)}
 							</KadencePanelBody>
 							{type && ( type === 'carousel' || type === 'fluidcarousel' || type === 'slider' || type === 'thumbslider' ) && (

@@ -22,7 +22,8 @@ jQuery( document ).ready( function( $ ) {
 			ss = parseInt( container.attr( 'data-columns-ss' ) ),
 			scroll = parseInt( container.attr( 'data-slider-scroll' ) ),
 			sliderType = container.attr('data-slider-type'),
-			slidercenter = container.attr( 'data-slider-center-mode' );
+			slidercenter = container.attr( 'data-slider-center-mode' ),
+			disableLazyLoading = container.attr( 'data-disable-lazy-loading' );
 		var slickRtl = false;
 		var scrollSxxl = xxl,
 			scrollSxl = xl,
@@ -97,9 +98,6 @@ jQuery( document ).ready( function( $ ) {
 				adaptiveHeight: true,
 				dots: sliderDots,
 			} );
-			$( window ).on( 'resize', function( e ) {
-				container.slick( 'refresh' );
-			} );
 		} else if ( sliderType && sliderType === 'thumbnail' ) {
 			var sliderFade = container.attr('data-slider-fade');
 			var sliderID = container.attr('id');
@@ -164,9 +162,6 @@ jQuery( document ).ready( function( $ ) {
 					},
 				],
 			} );
-			$( window ).on( 'resize', function( e ) {
-				container.slick( 'refresh' );
-			} );
 		} else {
 			container.slick( {
 				slidesToScroll: scrollSxxl,
@@ -217,8 +212,11 @@ jQuery( document ).ready( function( $ ) {
 					},
 				],
 			} );
-			$( window ).on( 'resize', function( e ) {
-				container.slick( 'refresh' );
+		}
+
+		if ( disableLazyLoading ) {
+			container.find ( 'img' ).each ( function() {
+				$ ( this ).removeAttr ( 'loading' );
 			} );
 		}
 	}
